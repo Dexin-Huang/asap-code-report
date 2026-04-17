@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="description"
+        content="ASAP Code Report: A first-time user's experience cloning and running the ASAP humanoid motion imitation codebase.">
+  <meta name="keywords" content="ASAP, Humanoid, Motion Imitation, Code Report, Sim2Sim, Retargeting">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ASAP Code Report: Accessibility and Stress-Testing</title>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    }
+
+    .publication-title {
+      font-weight: 700;
+    }
+
+    .publication-authors a {
+      color: #333 !important;
+      text-decoration: underline;
+    }
+
+    .author-block {
+      display: inline-block;
+    }
+
+    .link-block a {
+      margin-top: 5px;
+      margin-bottom: 5px;
+    }
+
+    /* Strip Bulma button rounding */
+    .button {
+      border-radius: 0 !important;
+    }
+
+    /* Video grid */
+    .video-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.25rem;
+      margin-top: 1.5rem;
+    }
+
+    .video-item video {
+      width: 100%;
+      display: block;
+      background: #000;
+    }
+
+    .video-item .caption {
+      padding: 0.4rem 0;
+      font-size: 0.9rem;
+    }
+
+    /* Plain table */
+    .plain-table {
+      width: 100%;
+      font-size: 0.95rem;
+      border-collapse: collapse;
+    }
+
+    .plain-table th,
+    .plain-table td {
+      border-bottom: 1px solid #ddd;
+      padding: 0.5rem 0.75rem;
+      text-align: left;
+    }
+
+    .plain-table th {
+      font-weight: 600;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: #555;
+      border-bottom: 2px solid #333;
+    }
+
+    .plain-table code {
+      background: #f0f0f0;
+      padding: 1px 4px;
+      font-size: 0.85em;
+    }
+
+    /* Training image */
+    .training-img {
+      max-width: 100%;
+      border: 1px solid #ddd;
+      margin-top: 1rem;
+    }
+
+    /* Note block — plain border, no color */
+    .note-block {
+      border-left: 3px solid #333;
+      padding: 0.75rem 1rem;
+      margin-top: 1.5rem;
+      font-size: 0.93rem;
+    }
+
+    /* Strip all Bulma card/box rounding */
+    .box, .card, .message, .tag, .notification {
+      border-radius: 0 !important;
+      box-shadow: none !important;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .video-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+
+<!-- Hero / Title -->
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title">ASAP Code Report: Accessibility and Stress-Testing</h1>
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">
+              A first-time user's experience cloning and running the ASAP humanoid motion imitation codebase
+            </span>
+          </div>
+          <br>
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">Dexin Huang</span>
+          </div>
+          <div class="is-size-6 publication-authors" style="margin-top: 0.25rem;">
+            <span class="author-block">COMS6998E &middot; Columbia University &middot; Spring 2026</span>
+          </div>
+
+          <div class="column has-text-centered" style="margin-top: 0.5rem;">
+            <div class="publication-links">
+              <span class="link-block">
+                <a href="https://arxiv.org/pdf/2502.01143"
+                   class="button is-normal is-dark"
+                   target="_blank">
+                  <span class="icon"><i class="fas fa-file-pdf"></i></span>
+                  <span>Paper</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="https://arxiv.org/abs/2502.01143"
+                   class="button is-normal is-dark"
+                   target="_blank">
+                  <span class="icon"><i class="ai ai-arxiv"></i></span>
+                  <span>arXiv</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="https://github.com/LeCAR-Lab/ASAP"
+                   class="button is-normal is-dark"
+                   target="_blank">
+                  <span class="icon"><i class="fab fa-github"></i></span>
+                  <span>Code</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="https://robopil.github.io/coms6998/26sp/"
+                   class="button is-normal is-dark"
+                   target="_blank">
+                  <span class="icon"><i class="fas fa-graduation-cap"></i></span>
+                  <span>Course</span>
+                </a>
+              </span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- Abstract / TLDR -->
+<section class="section">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+            We cloned the <a href="https://github.com/LeCAR-Lab/ASAP">ASAP</a> humanoid motion
+            imitation repository from scratch and documented every step a first-time user
+            would encounter. The setup required three separate conda environments
+            (<code>asap</code>, <code>hv_gym</code>, <code>asap_deploy</code>) and the manual
+            resolution of 10+ undocumented dependencies, taking approximately 1.5 hours from
+            <code>git clone</code> to a working demo. We ran Sim2Sim evaluation on all five
+            bundled ONNX policies (APT, CR7, kick, jump forward, Kobe), retargeted five
+            external dance motions from AIST++ onto the Unitree G1 robot, executed a Stage 1
+            training smoke test (100 PPO iterations, 32 envs, ~11 min), and catalogued four
+            major accessibility gaps: 38 of 52 motions ship without trained policies, bundled
+            checkpoints cover Stage 1 only, Stage 2 requires undocumented rollout data, and
+            external motions need undocumented format alignment.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- Sim2Sim Demos -->
+<section class="section">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-3">Sim2Sim Demos</h2>
+        <div class="content has-text-justified">
+          <p>
+            Bundled ONNX policies evaluated in MuJoCo. Each policy runs Stage 1 output
+            (joint targets) through the MuJoCo G1 model. Only 5 of the 52 reference motions
+            ship with trained policies.
+          </p>
+        </div>
+        <div class="video-grid">
+          <div class="video-item">
+            <video controls preload="metadata" muted loop>
+              <source src="../media/sim2sim/raw_capture/APT_level1.mp4" type="video/mp4">
+            </video>
+            <div class="caption">APT (Stage 1)</div>
+          </div>
+          <div class="video-item">
+            <video controls preload="metadata" muted loop>
+              <source src="../media/sim2sim/raw_capture/CR7_level1.mp4" type="video/mp4">
+            </video>
+            <div class="caption">CR7 (Stage 1)</div>
+          </div>
+          <div class="video-item">
+            <video controls preload="metadata" muted loop>
+              <source src="../media/sim2sim/raw_capture/kick_level1.mp4" type="video/mp4">
+            </video>
+            <div class="caption">Kick (Stage 1)</div>
+          </div>
+          <div class="video-item">
+            <video controls preload="metadata" muted loop>
+              <source src="../media/sim2sim/raw_capture/jump_forward_level1.mp4" type="video/mp4">
+            </video>
+            <div class="caption">Jump Forward (Stage 1)</div>
+          </div>
+          <div class="video-item">
+            <video controls preload="metadata" muted loop>
+              <source src="../media/sim2sim/raw_capture/Kobe_level1.mp4" type="video/mp4">
+            </video>
+            <div class="caption">Kobe (Stage 1)</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- Kinematic Replays -->
+<section class="section">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-3">Kinematic Replays</h2>
+        <div class="content has-text-justified">
+          <p>
+            Target reference motions played back on the G1 model in MuJoCo (no policy, pure
+            joint replay). These are the ground-truth trajectories the policies aim to track.
+          </p>
+        </div>
+        <div class="video-grid">
+          <div class="video-item">
+            <video controls preload="metadata" muted loop>
+              <source src="../media/kinematic/raw_capture/APT_level1.mp4" type="video/mp4">
+            </video>
+            <div class="caption">APT &mdash; target motion</div>
+          </div>
+          <div class="video-item">
+            <video controls preload="metadata" muted loop>
+              <source src="../media/kinematic/raw_capture/CR7_level1.mp4" type="video/mp4">
+            </video>
+            <div class="caption">CR7 &mdash; target motion</div>
+          </div>
+          <div class="video-item">
+            <video controls preload="metadata" muted loop>
+              <source src="../media/kinematic/raw_capture/kick_level1.mp4" type="video/mp4">
+            </video>
+            <div class="caption">Kick &mdash; target motion</div>
+          </div>
+          <div class="video-item">
+            <video controls preload="metadata" muted loop>
+              <source src="../media/kinematic/raw_capture/jump_forward_level1.mp4" type="video/mp4">
+            </video>
+            <div class="caption">Jump Forward &mdash; target motion</div>
+          </div>
+          <div class="video-item">
+            <video controls preload="metadata" muted loop>
+              <source src="../media/kinematic/raw_capture/Kobe_level1.mp4" type="video/mp4">
+            </video>
+            <div class="caption">Kobe &mdash; target motion</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- Custom Motions -->
+<section class="section">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-3">Custom Motions &mdash; AIST++ Dance Retargeting</h2>
+        <div class="content has-text-justified">
+          <p>
+            We downloaded AIST++ dance sequences, converted them from SMPL to AMASS format,
+            and retargeted onto the Unitree G1. This required fixing two undocumented format issues:
+          </p>
+          <ul>
+            <li><strong>Scale mismatch:</strong> AIST++ uses centimeters; ASAP expects meters. Raw import produces a 100x-scale humanoid.</li>
+            <li><strong>Coordinate frame:</strong> AIST++ is Y-up; ASAP / MuJoCo is Z-up. Without rotation the character lies flat on its back.</li>
+          </ul>
+        </div>
+
+        <h3 class="title is-4" style="margin-top: 2rem;">Raw SMPL Visualizations</h3>
+        <div class="video-grid">
+          <div class="video-item">
+            <video controls preload="metadata" muted loop>
+              <source src="../media/custom_motions/krump_smpl_raw.mp4" type="video/mp4">
+            </video>
+            <div class="caption">Krump &mdash; SMPL raw</div>
+          </div>
+          <div class="video-item">
+            <video controls preload="metadata" muted loop>
+              <source src="../media/custom_motions/cr7_smpl_raw.mp4" type="video/mp4">
+            </video>
+            <div class="caption">CR7 &mdash; SMPL raw</div>
+          </div>
+        </div>
+
+        <h3 class="title is-4" style="margin-top: 2rem;">Retargeted to G1</h3>
+        <div class="video-grid">
+          <div class="video-item">
+            <video controls preload="metadata" muted loop>
+              <source src="../media/custom_motions/krump_g1_retargeted.mp4" type="video/mp4">
+            </video>
+            <div class="caption">Krump (retargeted)</div>
+          </div>
+          <div class="video-item">
+            <video controls preload="metadata" muted loop>
+              <source src="../media/custom_motions/break_g1_retargeted.mp4" type="video/mp4">
+            </video>
+            <div class="caption">Break (retargeted)</div>
+          </div>
+          <div class="video-item">
+            <video controls preload="metadata" muted loop>
+              <source src="../media/custom_motions/waack_g1_retargeted.mp4" type="video/mp4">
+            </video>
+            <div class="caption">Waack (retargeted)</div>
+          </div>
+          <div class="video-item">
+            <video controls preload="metadata" muted loop>
+              <source src="../media/custom_motions/ballet_jazz_g1_retargeted.mp4" type="video/mp4">
+            </video>
+            <div class="caption">Ballet Jazz (retargeted)</div>
+          </div>
+          <div class="video-item">
+            <video controls preload="metadata" muted loop>
+              <source src="../media/custom_motions/pop_g1_retargeted.mp4" type="video/mp4">
+            </video>
+            <div class="caption">Pop (retargeted)</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- Setup Experience -->
+<section class="section">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-3">Setup Experience</h2>
+        <div class="content has-text-justified">
+          <p>
+            From <code>git clone</code> to running Sim2Sim demos: approximately 1.5 hours.
+            Three separate conda environments and 10+ undocumented dependencies required
+            manual resolution.
+          </p>
+        </div>
+
+        <table class="plain-table">
+          <thead>
+            <tr>
+              <th>Step</th>
+              <th>Environment</th>
+              <th>Time</th>
+              <th>Notes</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Clone &amp; read README</td>
+              <td>&mdash;</td>
+              <td>5 min</td>
+              <td>Repo is 1.2 GB with bundled ONNX checkpoints</td>
+            </tr>
+            <tr>
+              <td>Create <code>asap</code> env</td>
+              <td><code>asap</code></td>
+              <td>15 min</td>
+              <td>IsaacGym preview, torch 2.x, numpy pin</td>
+            </tr>
+            <tr>
+              <td>Create <code>hv_gym</code> env</td>
+              <td><code>hv_gym</code></td>
+              <td>20 min</td>
+              <td>Humanoid-Verse fork; missing <code>setuptools</code>, <code>pybullet</code></td>
+            </tr>
+            <tr>
+              <td>Create <code>asap_deploy</code> env</td>
+              <td><code>asap_deploy</code></td>
+              <td>15 min</td>
+              <td>MuJoCo deployment; pinned <code>mujoco==3.1.6</code></td>
+            </tr>
+            <tr>
+              <td>Debug missing deps</td>
+              <td>all</td>
+              <td>25 min</td>
+              <td><code>easydict</code>, <code>scipy</code>, <code>onnxruntime</code>, <code>lxml</code>, etc.</td>
+            </tr>
+            <tr>
+              <td>First Sim2Sim run</td>
+              <td><code>asap_deploy</code></td>
+              <td>5 min</td>
+              <td>Success on CR7 policy</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="note-block">
+          <strong>Reproducibility note:</strong>
+          The three-environment setup is not documented in a single place. Each sub-package
+          has its own partial <code>requirements.txt</code>. Several transitive dependencies
+          (<code>easydict</code>, <code>lxml</code>, <code>onnxruntime-gpu</code>) are only
+          discovered at runtime.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- Training Smoke Test -->
+<section class="section">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-3">Training Smoke Test</h2>
+        <div class="content has-text-justified">
+          <p>
+            100 PPO iterations on the CR7 motion to verify the training loop runs end-to-end.
+            This represents approximately 0.04% of the full 250,000-iteration training budget.
+          </p>
+          <p>
+            <strong>Configuration:</strong> 100 PPO iterations, 32 parallel envs, ~11 min wall-clock on RTX 4090 (0.04% of full training).
+          </p>
+        </div>
+
+        <img class="training-img" src="../media/cr7_training_curves.png"
+             alt="CR7 training curves -- 100 PPO iterations">
+
+        <div class="note-block">
+          <strong>Not converged:</strong>
+          The reward curves show the pipeline executes correctly but 100 iterations is far
+          too few for convergence. Full training (250k iters, 4096 envs) takes ~48 hours on
+          1x A100.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- Key Findings -->
+<section class="section">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-3">Key Findings</h2>
+        <div class="content has-text-justified">
+          <p>Major gaps discovered while stress-testing the ASAP codebase:</p>
+          <ul>
+            <li>
+              <strong>38 of 52 motions have no trained policy.</strong>
+              The repository bundles 52 reference motions but only ships ONNX checkpoints for 14.
+              The remaining 38 motions cannot be evaluated without retraining from scratch
+              (estimated 38 &times; 48 h = 1,824 GPU-hours on A100).
+            </li>
+            <li>
+              <strong>Bundled ONNX = Stage 1 only.</strong>
+              The shipped checkpoints correspond to Stage 1 (motion imitation) of the ASAP
+              pipeline. Stage 2 (adversarial refinement) and Stage 3 (sim-to-real transfer) are
+              not represented. Users evaluating the "full ASAP stack" from the repo will only see
+              Stage 1 behavior.
+            </li>
+            <li>
+              <strong>Stage 2 data gap: 0 of 52 motions have "action" key.</strong>
+              Stage 2 requires motion data with an <code>"action"</code> key populated from
+              Stage 1 rollouts. None of the 52 bundled motion files contain this key. Running
+              Stage 2 requires first completing a full Stage 1 training run and exporting the
+              rollout data&mdash;a step not documented in the README.
+            </li>
+            <li>
+              <strong>External motions need undocumented format alignment.</strong>
+              Bringing your own motions (e.g., from AIST++) requires: (a) SMPL-to-AMASS
+              conversion, (b) cm-to-m scale correction, (c) Y-up to Z-up coordinate rotation,
+              and (d) a specific key layout in the <code>.pkl</code> file. None of these steps
+              are documented.
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- Footer -->
+<footer class="footer" style="padding: 2rem 1.5rem;">
+  <div class="container">
+    <div class="content has-text-centered">
+      <a href="https://arxiv.org/pdf/2502.01143" target="_blank" style="font-size: 25px; color: #363636; margin: 0 0.5rem;">
+        <i class="fas fa-file-pdf"></i>
+      </a>
+      <a href="https://github.com/LeCAR-Lab/ASAP" target="_blank" style="font-size: 25px; color: #363636; margin: 0 0.5rem;">
+        <i class="fab fa-github"></i>
+      </a>
+    </div>
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content has-text-centered" style="font-size: 0.85rem;">
+          <p>
+            ASAP Code Report &mdash; Dexin Huang &mdash;
+            <a href="https://robopil.github.io/coms6998/26sp/">COMS6998E</a>
+            Deep Learning for Robot Manipulation, Spring 2026
+          </p>
+          <p>
+            This website template is borrowed from
+            <a href="https://github.com/nerfies/nerfies.github.io">Nerfies</a>,
+            licensed under a
+            <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
+            Creative Commons Attribution-ShareAlike 4.0 International License</a>.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+</body>
+</html>
